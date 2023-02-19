@@ -1,0 +1,27 @@
+INCLUDE_DIRS = /mingw32/include/libpurple \
+			   /mingw32/include/glib-2.0 \
+			   /mingw32/lib/glib-2.0/include
+
+CFLAGS += -O2 -fpic ${INCLUDE_DIRS:%=-I%}
+CPPFLAGS += -DPURPLE_PLUGINS
+LDFLAGS += -shared
+LDLIBS += -lpurple -lglib-2.0
+CC = gcc
+LD = gcc
+
+OBJECTS = callbacks.o crc32.o misc.o pending-list.o privacy.o string.o \
+		  config.o frame.o plugin.o qa.o
+
+
+spamguard.dll: ${OBJECTS}
+	${LD} ${LDFLAGS} -o $@ \
+		-Wl,--out-implib=$@.a \
+		-Wl,--export-all-symbols \
+		-Wl,--enable-auto-import \
+		-Wl,--whole-archive ${OBJECTS} \
+		-Wl,--no-whole-archive ${LDLIBS}
+
+clean:
+	rm -f ${OBJECTS}
+	rm -f spamguard.dll
+	rm -f spamguard.dll.a

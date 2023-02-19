@@ -1,0 +1,3 @@
+What is the last name of the first president of the United States?|Washington
+What is the distance between the Earth and the Moon in kilometers?|382500
+Which year was Shakespeare born?|1564
